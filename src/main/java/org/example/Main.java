@@ -1,11 +1,10 @@
 package org.example;
 
-import org.example.model.User;
+import org.example.dao.UserDao;
 import org.example.server.HttpServerConfig;
 import org.example.service.UserService;
-import org.example.util.PropertiesLoader;
+import org.example.util.propertie.PropertiesLoader;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -26,17 +25,8 @@ public class Main {
 
 
 
-        UserService userService = new UserService(url, username, password);
+        UserService userService = new UserService(new UserDao(url, username, password));
 
-//
-//        User user = new User();
-//
-//        user.setName("Rodrigo");
-//        user.setEmail("Rocha");
-//        user.setPassword("1233455");
-//
-//        userService.create(user);
-        
 
 
     }

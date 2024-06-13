@@ -3,6 +3,7 @@ package org.example.server;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import org.example.util.api.ApiUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,8 +25,7 @@ public class HttpServerConfig {
         HttpServer server = HttpServer.create(new InetSocketAddress(serverPort), 0);
         HttpContext context = server.createContext("/api/hello", (exchange -> {
             if ("GET".equals(exchange.getRequestMethod())) {
-                Map<String, List<String>> params = splitQuery(exchange.getRequestURI().getRawQuery());
-
+                Map<String, List<String>> params = ApiUtils.splitQuery(exchange.getRequestURI().getRawQuery());
 
                 String name = params.getOrDefault("name", List.of("Anônimo")).stream().findFirst().orElse("Anônimo");
 
@@ -54,23 +54,4 @@ public class HttpServerConfig {
         server.start();
     }
 
-    public Map<String, List<String>> splitQuery(String query) {
-        if (query == null || query.isEmpty()) {
-            return Collections.emptyMap();
-        }
-
-        return Pattern.compile("&").splitAsStream(query)
-                .map(s -> Arrays.copyOf(s.split("="), 2))
-                .collect(Collectors.groupingBy(s -> decode(s[0]),
-                        Collectors.mapping(s -> decode(s[1]), Collectors.toList())));
-    }
-
-
-    public String decode(final String encoded) {
-        return encoded == null ? null : URLDecoder.decode(encoded, StandardCharsets.UTF_8);
-    }
-
-    public void getRoute(String requestMethod) {
-
-    }
 }

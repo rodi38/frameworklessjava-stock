@@ -1,6 +1,7 @@
 package org.example.dao;
 
-import org.example.model.User;
+import org.example.model.dto.NewUser;
+import org.example.model.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -88,6 +89,27 @@ public class UserDao {
             System.out.println(e.getMessage());
         }
         return users;
+    }
+
+    public void update(User user) {
+
+        String sql = "UPDATE users SET name =?, email =?, password =? WHERE id =?";
+
+
+        try(Connection conn = connect();
+            PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getName());
+            preparedStatement.setInt(4, user.getId());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
 
