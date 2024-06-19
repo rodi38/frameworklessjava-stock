@@ -16,18 +16,6 @@ public class Main {
 
         httpServerConfig.startServer();
 
-        Properties properties = PropertiesLoader.loadProperties();
-
-
-        String url = properties.getProperty("db.url");
-        String username = properties.getProperty("db.username");
-        String password = properties.getProperty("db.password");
-
-
-
-        UserService userService = new UserService(new UserDao(url, username, password));
-
-
 
     }
 }

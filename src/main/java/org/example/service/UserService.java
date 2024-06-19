@@ -27,7 +27,7 @@ public class UserService {
         return UserMapper.userToUserDto(userDao.readUser(id));
     }
 
-    public List<UserDto> findAllUsers() {
+    public List<UserDto> findAll() {
         return UserMapper.userListToUserDtoList(userDao.readAllUsers());
     }
 
