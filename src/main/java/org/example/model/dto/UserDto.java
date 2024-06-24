@@ -10,7 +10,16 @@ public class UserDto {
 
     private String password;
 
+    public UserDto(int id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
+    public UserDto(){
+
+    }
     public int getId(){
         return id;
     }

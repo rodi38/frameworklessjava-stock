@@ -26,20 +26,32 @@ public class UserDao {
     }
 
 
-    public void createUser(User user) {
+    public User createUser(User user) {
         String sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+        User user1 = new User();
 
         try(Connection conn = connect();
-            PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
+            PreparedStatement prepareStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             prepareStatement.setString(1, user.getName());
             prepareStatement.setString(2, user.getEmail());
             prepareStatement.setString(3, user.getPassword());
             prepareStatement.executeUpdate();
 
+            ResultSet resultSet = prepareStatement.getGeneratedKeys();
+            if(resultSet.next()) {
+                user1.setId(resultSet.getInt(1));
+                user1.setName(resultSet.getString("name"));
+                user1.setEmail(resultSet.getString("email"));
+                user1.setPassword(resultSet.getString("password"));
+                System.out.println(user1);
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        return user1;
     }
 
     public User readUser(int id) {

@@ -1,40 +1,37 @@
 package org.example.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import org.example.config.Configuration;
 import org.example.controller.UserController;
-import org.example.dao.UserDao;
-import org.example.service.UserService;
-import org.example.util.api.ApiUtils;
-import org.example.util.propertie.PropertiesLoader;
+
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 
 
 public class HttpServerConfig {
-    private final int serverPort = 8000;
 
     public void startServer() throws IOException {
 
-        Properties properties = PropertiesLoader.loadProperties();
-
-        UserDao userDao = new UserDao( properties.getProperty("db.url"),  properties.getProperty("db.username"),  properties.getProperty("db.password"));
-        UserService userService = new UserService(userDao);
-        UserController userController = new UserController(userService);
+        UserController userController = new UserController(Configuration.getObjectMapper(),
+                Configuration.getGlobalExceptionHandler(),
+                Configuration.getUserService());
 
 
+        int serverPort = 8000;
         HttpServer server = HttpServer.create(new InetSocketAddress(serverPort), 0);
+
+
+        server.createContext("/api/users", userController::handle);
+        server.createContext("/api/users/create", userController::handle);
+
+
         HttpContext context = server.createContext("/", (exchange -> {
             String response = "Hello, the API is working well!";
 
@@ -45,9 +42,6 @@ public class HttpServerConfig {
             exchange.close();
 
         }));
-
-        server.createContext("/api/users", userController.findAll());
-        server.createContext("/api/users/create", userController.create());
 
         context.setAuthenticator(new BasicAuthenticator("myrealm") {
             @Override

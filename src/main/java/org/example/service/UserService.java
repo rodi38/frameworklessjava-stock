@@ -16,14 +16,14 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public void create(NewUser user) {
-        if (user != null) {
-            userDao.createUser(UserMapper.newUserToUser(user));
-        }
+    public UserDto create(NewUser request) {
+        User user = userDao.createUser(UserMapper.newUserToUser(request));
+        System.out.println(user.getId());
+        return UserMapper.userToUserDto(user);
 
     }
 
-    public UserDto findById(int id){
+    public UserDto findById(int id) {
         return UserMapper.userToUserDto(userDao.readUser(id));
     }
 

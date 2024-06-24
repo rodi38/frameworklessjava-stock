@@ -8,6 +8,14 @@ public class NewUser {
 
     private String password;
 
+    public NewUser(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+    public NewUser(){
+
+    }
 
     public String getEmail() {
         return email;
