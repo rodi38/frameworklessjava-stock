@@ -13,5 +13,4 @@ public class Exceptions {
         return new ResourceNotFoundException(StatusCode.NOT_FOUND.getCode(), message);
     }
 
-
 }

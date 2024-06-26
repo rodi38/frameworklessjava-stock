@@ -19,6 +19,8 @@ public class HttpServerConfig {
 
     public void startServer() throws IOException {
 
+
+
         UserController userController = new UserController(Configuration.getObjectMapper(),
                 Configuration.getGlobalExceptionHandler(),
                 Configuration.getUserService());

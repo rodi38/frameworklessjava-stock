@@ -25,4 +25,5 @@ public class ApiUtils {
     public static String decode(final String encoded) {
         return encoded == null ? null : URLDecoder.decode(encoded, StandardCharsets.UTF_8);
     }
+
 }

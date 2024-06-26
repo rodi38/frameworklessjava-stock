@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
             throwable.printStackTrace();
 
             exchange.getRequestHeaders().set(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON);
+
             ErrorResponse res = getErrorResponse(throwable, exchange);
             OutputStream resBody = exchange.getResponseBody();
             resBody.write(objectMapper.writeValueAsBytes(res));
